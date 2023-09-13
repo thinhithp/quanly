@@ -15,8 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class LichSuDichVuEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entity_seq_gen4")
-    @SequenceGenerator(name = "entity_seq_gen4", sequenceName = "entity_sequence_lich_su_dich_vu")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

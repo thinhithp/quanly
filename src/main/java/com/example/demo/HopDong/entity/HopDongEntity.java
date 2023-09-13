@@ -17,8 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class HopDongEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entity_seq_gen5")
-    @SequenceGenerator(name = "entity_seq_gen5", sequenceName = "entity_sequence_hop_dong")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

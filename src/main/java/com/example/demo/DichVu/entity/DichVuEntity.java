@@ -14,8 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class DichVuEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entity_seq_gen3")
-    @SequenceGenerator(name = "entity_seq_gen3", sequenceName = "entity_sequence_dich_vu")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

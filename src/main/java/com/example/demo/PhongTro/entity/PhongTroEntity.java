@@ -20,8 +20,7 @@ import java.util.List;
 public class PhongTroEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entity_seq_gen")
-    @SequenceGenerator(name = "entity_seq_gen", sequenceName = "entity_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PHONG_TRO")
     private Long id;
 
