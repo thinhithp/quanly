@@ -20,8 +20,7 @@ import java.util.List;
 public class KhachThueEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entity_seq_gen2")
-    @SequenceGenerator(name = "entity_seq_gen2", sequenceName = "entity_sequence_khach_thue")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_KHACH_THUE")
     private Long id;
 
