@@ -44,11 +44,11 @@ public class HopDongEntity {
     @Column(name = "TIEN_DAT_COC")
     private Float tienDatCoc;
 
-    @Column(name = "ChuKyThanhToan", length = 50)
+    @Column(name = "CHU_KY_THANH_TOAN", length = 50)
     private Common.ChuKyThanhToanEnum chuKyThanhToan;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TinhTrangThanhToan", length = 50)
+    @Column(name = "TINH_TRANG_THANH_TOAN", length = 50)
     private Common.TinhTrangThanhToanEnum tinhTrangThanhToan;
 
     @Column(name = "NGUOI_TAO", length = 4000)
