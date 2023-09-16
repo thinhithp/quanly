@@ -5,20 +5,14 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +21,6 @@ public class GoogleApiConnectService {
 
     @Autowired
     private Drive driver;
-
 
 
     public List<com.google.api.services.drive.model.File> getAllGoogleDriveFiles() throws IOException {
@@ -68,6 +61,7 @@ public class GoogleApiConnectService {
 
         return previewLink;
     }
+
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
         // Tạo một tệp tạm thời
         File file = File.createTempFile("temp-", multipartFile.getOriginalFilename());

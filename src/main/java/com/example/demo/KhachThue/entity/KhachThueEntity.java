@@ -21,7 +21,7 @@ public class KhachThueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_KHACH_THUE")
+    @Column(name = "ID")
     private Long id;
 
     @Column(name = "MA_KHACH_THUE")
