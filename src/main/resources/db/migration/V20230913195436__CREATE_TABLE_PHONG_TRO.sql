@@ -16,6 +16,7 @@ CREATE TABLE PHONG_TRO
     NGAY_TAO          TIMESTAMP,
     NGUOI_SUA         VARCHAR(255),
     NGAY_SUA          TIMESTAMP,
+    ID_NHA             INTEGER,
     IS_DELETE         SMALLINT
 
 );

@@ -1,6 +1,6 @@
 CREATE TABLE KHACH_THUE
 (
-    ID_KHACH_THUE      SERIAL PRIMARY KEY,
+    ID                  SERIAL PRIMARY KEY,
     MA_KHACH_THUE      VARCHAR,
     HO                 VARCHAR(30),
     TEN                VARCHAR(20),

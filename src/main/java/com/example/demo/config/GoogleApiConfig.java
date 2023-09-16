@@ -32,11 +32,12 @@ public class GoogleApiConfig {
     }
 
     @Bean
-    public GoogleCredential googleCredential() throws GeneralSecurityException, IOException {
+    public GoogleCredential googleCredential() throws IOException {
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();
 
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream("C:\\Users\\QUANG THINH\\Desktop\\work\\quan2-399017-2b3e79d1e06a.json"), httpTransport, jsonFactory)
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream
+                        ("C:\\Users\\QUANG THINH\\Desktop\\work\\quanlyphongtro-399015-e2b1257b2fa5.json"), httpTransport, jsonFactory)
                 .createScoped(Collections.singleton("https://www.googleapis.com/auth/drive"));
 
         return credential;

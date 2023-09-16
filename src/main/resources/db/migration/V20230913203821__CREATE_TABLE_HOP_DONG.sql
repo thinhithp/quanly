@@ -1,6 +1,7 @@
 CREATE TABLE HOP_DONG
 (
     ID                    SERIAL PRIMARY KEY,
+    ID_KHACH_THUE         INT,
     MA_HOP_DONG           VARCHAR(10),
     NGAY_BAT_DAU          TIMESTAMP,
     NGAY_KET_THUC         TIMESTAMP,
