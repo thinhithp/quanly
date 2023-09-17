@@ -1,10 +1,13 @@
 package com.example.demo.DichVu.entity;
 
+import com.example.demo.Nha.entity.NhaEntity;
+import com.example.demo.ThanhToan.entity.ThanhToanEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -49,6 +52,14 @@ public class DichVuEntity {
 
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
+
+    @ManyToOne
+    @JoinColumn(name = "id_nha", referencedColumnName = "id")
+    private NhaEntity nha;
+
+    @OneToOne(mappedBy = "dichVu")
+    private ThanhToanEntity thanhToan;
+
 
     @PrePersist
     public void generateMaDichVu() {

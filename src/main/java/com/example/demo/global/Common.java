@@ -19,62 +19,66 @@ public class Common {
 
     @Getter
     @AllArgsConstructor
-    public enum TinhTrangPhong {
-        TRONG("T", "Phòng trống"),
-        DA_THUE("DT", "Đã thuê"),
-        DA_DAT_COC("DTC", "Đã đặt cọc"),
-        DANG_SUA_CHUA("DSC", "Đang sửa chữa");
+    public enum TinhTrang {
+        TRONG( "Phòng trống"),
+        DA_THUE( "Đã thuê"),
+        DA_DAT_COC("Đã đặt cọc"),
+        DANG_SUA_CHUA( "Đang sửa chữa"),
+        CON_PHONG_TRONG("Còn phòng trống");
 
-        private final String value;
         private final String name;
 
-        public static TinhTrangPhong of(int ordinal) {
-            for (TinhTrangPhong tinhTrangPhong : TinhTrangPhong.values()) {
-                if (Objects.equals(tinhTrangPhong.ordinal(), ordinal)) {
-                    return tinhTrangPhong;
+
+        public static TinhTrang of(int ordinal) {
+            for (TinhTrang tinhTrang : TinhTrang.values()) {
+                if (Objects.equals(tinhTrang.ordinal(), ordinal)) {
+                    return tinhTrang;
                 }
             }
-            return DANG_SUA_CHUA;
+            return CON_PHONG_TRONG;
         }
 
-        public static TinhTrangPhong fromValue(String value) {
-            for (TinhTrangPhong tinhTrangPhong : TinhTrangPhong.values()) {
-                if (tinhTrangPhong.value.equals(value)) {
-                    return tinhTrangPhong;
+        public static TinhTrang fromValue(String value) {
+            for (TinhTrang tinhTrang : TinhTrang.values()) {
+                if (tinhTrang.name.equals(value)) {
+                    return tinhTrang;
                 }
             }
-            return DANG_SUA_CHUA;
+            return CON_PHONG_TRONG;
         }
     }
 
     @Getter
     @AllArgsConstructor
-    public enum LoaiPhong {
+    public enum Loai {
         DON("D", "Đơn"),
         DOI("D2", "Đôi"),
         LON_HON_2("LH2", "Lớn hơn 2 phòng"),
-        O_GHEP("G", "Phòng ở ghép người");
+        O_GHEP("G", "Phòng ở ghép người"),
+
+        NHA_NGUYEN_CAN("NC", "Nhà nguyên căn"),
+        CHUNG_CU_MINI("CCMN", "Chung cư mini");
 
 
         private final String value;
         private final String name;
 
-        public static LoaiPhong of(int ordinal) {
-            for (LoaiPhong loaiPhong : LoaiPhong.values()) {
-                if (Objects.equals(loaiPhong.ordinal(), ordinal)) {
-                    return loaiPhong;
+        public static Loai of(int ordinal) {
+            for (Loai loai : Loai.values()) {
+                if (Objects.equals(loai.ordinal(), ordinal)) {
+                    return loai;
                 }
             }
-            return DON;
+            return CHUNG_CU_MINI;
         }
 
-        public static LoaiPhong fromValue(String value) {
-            for (LoaiPhong loaiPhong : LoaiPhong.values()) {
-                if (loaiPhong.value.equals(value)) {
-                    return loaiPhong;
+        public static Loai fromValue(String value) {
+            for (Loai loai : Loai.values()) {
+                if (loai.value.equals(value)) {
+                    return loai;
                 }
             }
-            return DON;
+            return CHUNG_CU_MINI;
         }
     }
 

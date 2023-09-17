@@ -2,6 +2,7 @@ package com.example.demo.HopDong.entity;
 
 import com.example.demo.KhachThue.entity.KhachThueEntity;
 import com.example.demo.PhongTro.entity.PhongTroEntity;
+import com.example.demo.ThanhToan.entity.ThanhToanEntity;
 import com.example.demo.global.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "HOP_DONG")
@@ -24,14 +26,6 @@ public class HopDongEntity {
 
     @Column(name = "MA_HOP_DONG", nullable = false, unique = true, length = 10)
     private String maHopDong;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_KHACH_THUE", nullable = false)
-    private KhachThueEntity khachThue;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PHONG_TRO", nullable = false)
-    private PhongTroEntity phong;
 
     @Column(name = "NGAY_BAT_DAU")
     @Temporal(TemporalType.DATE)
@@ -67,6 +61,13 @@ public class HopDongEntity {
 
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
+
+    @OneToMany(mappedBy = "hopDong", cascade = CascadeType.ALL)
+    private List<ThanhToanEntity> thanhToan;
+
+    @ManyToOne
+    @JoinColumn(name = "id_khach_thue", referencedColumnName = "id")
+    private KhachThueEntity khachThue;
 
     @PrePersist
     public void generateMaHopDong() {

@@ -1,13 +1,16 @@
 package com.example.demo.Nha.entity;
 
-import com.example.demo.DichVu.entity.LichSuDichVuEntity;
+import com.example.demo.DichVu.entity.DichVuEntity;
 import com.example.demo.KhachThue.entity.KhachThueEntity;
+import com.example.demo.PhongTro.entity.PhongTroEntity;
+import com.example.demo.global.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class NhaEntity {
 
     @Column(name = "DIEN_TICH")
     @Comment("Họ")
-    private Float dienTich;
+    private BigDecimal dienTich;
 
     @Column(name = "GHI_CHU")
     @Comment("Ghi chú")
@@ -36,14 +39,11 @@ public class NhaEntity {
 
     @Column(name = "GIA_THUE")
     @Comment("Giá thuê")
-    private Float giaThue;
+    private BigDecimal giaThue;
 
     @Column(name = "HINH_ANH")
     @Comment("Hình ảnh")
     private String hinhAnh;
-
-    @OneToMany(mappedBy = "ID", fetch = FetchType.LAZY)
-    private List<KhachThueEntity> khachThue;
 
     @Column(name = "LOAI_NHA")
     @Comment("Loại nhà")
@@ -71,10 +71,25 @@ public class NhaEntity {
 
     @Column(name = "TINH_TRANG_NHA")
     @Comment("Tình trạng nhà")
-    private Date tinhTrangNha;
+    @Enumerated(EnumType.STRING)
+    private Common.TinhTrang tinhTrangNha ;
 
     @Column(name = "TONG_SO_TANG")
     @Comment("Tổng số tầng")
-    private Date tongSoTang;
+    private Integer tongSoTang;
 
+    @OneToMany(mappedBy = "nha",cascade = CascadeType.ALL)
+    private List<PhongTroEntity> danhSachPhong;
+
+    @OneToMany(mappedBy = "nha", cascade = CascadeType.ALL)
+    private List<DichVuEntity> danhSachDichVu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_khach_thue", referencedColumnName = "id")
+    private KhachThueEntity khachThue;
+
+    @PostPersist
+    public void generateMaNha() {
+        this.maNha = "NH" + id;
+    }
 }

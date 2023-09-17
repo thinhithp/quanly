@@ -2,6 +2,8 @@ package com.example.demo.KhachThue.entity;
 
 import com.example.demo.DichVu.entity.LichSuDichVuEntity;
 import com.example.demo.HopDong.entity.HopDongEntity;
+import com.example.demo.Nha.entity.NhaEntity;
+import com.example.demo.PhongTro.entity.PhongTroEntity;
 import com.example.demo.global.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -87,11 +89,16 @@ public class KhachThueEntity {
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
 
-    @OneToMany(mappedBy = "khachThue", fetch = FetchType.LAZY)
-    private List<LichSuDichVuEntity> lichSuDichVus;
 
-    @OneToMany(mappedBy = "khachThue", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "khachThue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HopDongEntity> hopDong;
+
+    @OneToMany(mappedBy = "khachThue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<NhaEntity> danhSachNha;
+
+    @OneToMany(mappedBy = "khachThue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PhongTroEntity> danhSachPhongTro;
+
 
     // Được gọi trước khi một entity được cập nhật
     @PrePersist

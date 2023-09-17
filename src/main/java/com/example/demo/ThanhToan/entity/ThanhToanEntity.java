@@ -1,11 +1,15 @@
 package com.example.demo.ThanhToan.entity;
 
+import com.example.demo.DichVu.entity.DichVuEntity;
+import com.example.demo.DichVu.entity.LichSuDichVuEntity;
+import com.example.demo.HopDong.entity.HopDongEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "THANH_TOAN")
@@ -19,8 +23,6 @@ public class ThanhToanEntity {
     @Column(name = "ID")
     private Long id;
 
-    // Có mã hợp đồng foreign key với bảng hợp đồng
-    // Có mã phòng fk với bảng Phòng trọ
     @Column(name = "SO_TIEN")
     private Float soTien;
     @Column(name = "GHI_CHU")
@@ -42,4 +44,17 @@ public class ThanhToanEntity {
 
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_dich_vu", referencedColumnName = "id")
+    private DichVuEntity dichVu;
+
+    @OneToOne(mappedBy = "thanhToan")
+    private LichSuDichVuEntity lichSuDichVu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_hop_dong", referencedColumnName = "id")
+    private HopDongEntity hopDong;
+
 }

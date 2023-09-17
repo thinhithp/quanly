@@ -1,6 +1,8 @@
 package com.example.demo.PhongTro.entity;
 
 import com.example.demo.HopDong.entity.HopDongEntity;
+import com.example.demo.KhachThue.entity.KhachThueEntity;
+import com.example.demo.Nha.entity.NhaEntity;
 import com.example.demo.global.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,23 +23,23 @@ public class PhongTroEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PHONG_TRO")
+    @Column(name = "ID")
     private Long id;
 
     @Column(name = "MA_PHONG",unique = true, updatable = false, nullable = false)
     private String maPhong;
 
     @Column(name = "TINH_TRANG_PHONG", length = 20)
-    private Common.TinhTrangPhong tinhTrangPhong;
+    private Common.TinhTrang tinhTrang;
 
     @Column(name = "GIA_THUE")
     private Float giaThue;
 
     @Column(name = "DIEN_TICH")
     private Float dienTich;
-
+/*
     @Column(name = "MO_TA", length = 4000)
-    private String moTa;
+    private String moTa;*/
 
     @Column(name = "HINH_ANH", length = 4000)
     private String hinhAnh;
@@ -51,7 +53,7 @@ public class PhongTroEntity {
     private Integer soTang;
 
     @Column(name = "LOAI_PHONG", length = 20)
-    private Common.LoaiPhong loaiPhong;
+    private Common.Loai loai;
 
     @Column(name = "SO_NGUOI_TOI_DA")
     @Min(0)
@@ -83,8 +85,13 @@ public class PhongTroEntity {
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
 
-    @OneToMany(mappedBy = "phong", fetch = FetchType.LAZY)
-    private List<HopDongEntity> lichSuDichVus;
+    @ManyToOne
+    @JoinColumn(name = "id_nha",referencedColumnName = "id")
+    private NhaEntity nha;
+
+    @ManyToOne
+    @JoinColumn(name = "id_khach_thue", referencedColumnName = "id")
+    private KhachThueEntity khachThue;
 
     // Được gọi trước khi một entity được cập nhật
     @PrePersist

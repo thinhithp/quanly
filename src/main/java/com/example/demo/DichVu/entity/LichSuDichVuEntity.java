@@ -1,6 +1,6 @@
 package com.example.demo.DichVu.entity;
 
-import com.example.demo.KhachThue.entity.KhachThueEntity;
+import com.example.demo.ThanhToan.entity.ThanhToanEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,17 +19,6 @@ public class LichSuDichVuEntity {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "maLichSu", nullable = false, unique = true, length = 10)
-    private String maLichSu;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MA_KHACH_THUE", nullable = false)
-    private KhachThueEntity khachThue;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "maDichVu", nullable = false)
-    private DichVuEntity dichVu;
-
     @Column(name = "NGAY_SU_DUNG")
     @Temporal(TemporalType.DATE)
     private Date ngaySuDung;
@@ -40,5 +29,8 @@ public class LichSuDichVuEntity {
     @Column(name = "TONG_TIEN")
     private Float tongTien;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_thanh_toan", referencedColumnName = "id")
+    private ThanhToanEntity thanhToan;
 
 }
