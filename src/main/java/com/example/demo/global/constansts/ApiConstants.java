@@ -20,9 +20,10 @@ public class ApiConstants {
 
         public static final String NHA_CREATE = "create";
         public static final String NHA_UPDATE = "update/{id}";
-
+        public static final String NHA_UPDATE_IMAGE = "update-image/{id}";
         public static final String DETAIL = "{id}";
-
+        public static final String GET_LINK_IMAGE = "/get-link/{id}";
+        public static final String DELETE = "/delete/{id}";
 
         // depcreption
 

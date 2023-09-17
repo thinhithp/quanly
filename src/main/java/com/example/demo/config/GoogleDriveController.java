@@ -1,17 +1,13 @@
 package com.example.demo.config;
 
+import com.example.demo.config.dto.ResultDtos;
 import com.google.api.services.drive.model.File;
-import com.google.common.io.Files;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -21,11 +17,11 @@ public class GoogleDriveController {
     private GoogleApiConnectService googleDriveService;
 
     @GetMapping("/google-drive/files")
-    public List<File> getAllGoogleDriveFiles() {
+    public List<File> getAllGoogleDriveFiles()  {
         try {
             return googleDriveService.getAllGoogleDriveFiles();
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching Google Drive files.", e);
+            throw new RuntimeException("Error fetching Google Drive files.");
         }
     }
 
@@ -39,9 +35,9 @@ public class GoogleDriveController {
     }
 
     @PostMapping(value = "/google-drive/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String upload(@RequestBody MultipartFile image) {
+    public ResultDtos upload(@RequestBody List<MultipartFile> image, @RequestParam String id) {
         try {
-            return googleDriveService.uploadImage(image);
+            return googleDriveService.uploadImagesV2(image, id);
         } catch (IOException e) {
             throw new RuntimeException("Error creating folder on Google Drive.", e);
         }
@@ -59,7 +55,7 @@ public class GoogleDriveController {
 
         }*/
 
-    @GetMapping("/download")
+   /* @GetMapping("/download")
     public ResponseEntity<String> downloadImage(
             @RequestParam String fileId
     ) {
@@ -89,6 +85,11 @@ public class GoogleDriveController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi tải xuống tệp ảnh.");
         }
+    }*/
+
+    @GetMapping("/getFilesInFolder")
+    public List<String> getFilesInFolder(@RequestParam String folderId) throws IOException {
+        return googleDriveService.listFilesInFolder(folderId);
     }
 
 

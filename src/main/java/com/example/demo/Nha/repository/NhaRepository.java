@@ -4,8 +4,6 @@ import com.example.demo.Nha.dto.request.NhaCreaterDto;
 import com.example.demo.Nha.dto.request.NhaUpdateDto;
 import com.example.demo.Nha.entity.NhaEntity;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,12 +14,13 @@ import org.springframework.stereotype.Repository;
 public interface NhaRepository extends JpaRepository<NhaEntity, Long> {
 
     @Transactional
-    @Modifying
-    @Query(value = "INSERT INTO NHA (TINH_TRANG_NHA, DIA_CHI, DIEN_TICH, NGUOI_TAO, NGAY_TAO) " +
-            "VALUES (:#{#nhaCreaterDto.tinhTrangNha},:#{#nhaCreaterDto.diaChi}, " +
-            ":#{#nhaCreaterDto.dienTich}, 'thinhnq', CURRENT_DATE)",
+    // @Modifying
+    @Query(value = "INSERT INTO NHA (TINH_TRANG_NHA, DIA_CHI, DIEN_TICH, NGUOI_TAO, NGAY_TAO, IS_DELETE) " +
+            "VALUES (:#{#nhaCreaterDto.tinhTrangNha}, :#{#nhaCreaterDto.diaChi}, " +
+            ":#{#nhaCreaterDto.dienTich}, 'thinhnq', CURRENT_DATE, 0) " +
+            "RETURNING *", // Trả về tất cả các cột trong bảng NHA
             nativeQuery = true)
-    void insertNha(NhaCreaterDto nhaCreaterDto);
+    NhaEntity insertNha(NhaCreaterDto nhaCreaterDto);
 
     @Transactional
     @Modifying
@@ -40,5 +39,9 @@ public interface NhaRepository extends JpaRepository<NhaEntity, Long> {
             nativeQuery = true)
     void updateNha(@Param("id") Long id, @Param("nhaUpdateDto") NhaUpdateDto nhaUpdateDto);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE NHA SET IS_DELETE = 1 WHERE ID =:id", nativeQuery = true)
+    int deleteNha(@Param("id") Long id);
 
 }

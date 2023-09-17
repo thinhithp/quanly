@@ -1,5 +1,8 @@
 package com.example.demo.config;
 
+import com.example.demo.config.dto.ErrorResultDto;
+import com.example.demo.config.dto.ResultDtos;
+import com.example.demo.global.constansts.Contants;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.services.drive.Drive;
@@ -13,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,27 +34,42 @@ public class GoogleApiConnectService {
         return result.getFiles();
     }
 
+    //    public String createNewFolder(String folderName) throws IOException {
+//        com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+//        fileMetadata.setName(folderName);
+//        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+//        // đây là đường dẫn tổng
+//    //    String parentFolderId = "1Ykt7ksHaucwB_i-ez0QCA3SVeeS_gv5U";
+//        String parentFolderId = "12SepHwdYaQyR3J9eIMkOcqvfRyrHA00d";
+//        fileMetadata.setParents(Collections.singletonList(parentFolderId));
+//
+//        com.google.api.services.drive.model.File file = driver.files().create(fileMetadata).setFields("id").execute();
+//        return file.getId();
+//    }
     public String createNewFolder(String folderName) throws IOException {
         com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
         fileMetadata.setName(folderName);
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
-
-        String parentFolderId = "1Ykt7ksHaucwB_i-ez0QCA3SVeeS_gv5U";
+        String parentFolderId = "12SepHwdYaQyR3J9eIMkOcqvfRyrHA00d"; // Thay thế bằng id thư mục cha của bạn
         fileMetadata.setParents(Collections.singletonList(parentFolderId));
 
         com.google.api.services.drive.model.File file = driver.files().create(fileMetadata).setFields("id").execute();
-        return file.getId();
+
+        // Tạo URL truy cập bằng cách thêm id của thư mục vào đường dẫn cơ bản
+
+        return Contants.BASE_FOLDER_URL + file.getId();
     }
 
-    public String uploadImage(MultipartFile imageFile) throws IOException {
+/*    public String uploadImage(MultipartFile imageFile) throws IOException {
         // Chuyển đổi MultipartFile thành java.io.File
         File localFile = convertMultipartFileToFile(imageFile);
 
         com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
         fileMetadata.setName(localFile.getName());
-        String parentFolder = "1n38aIqPBZhyUAfMFFrBtd3RBW5T7NvwA";
+        // lấy ID của thư mục được chia sẻ
+        String parentFolder = "12SepHwdYaQyR3J9eIMkOcqvfRyrHA00d";
         fileMetadata.setParents(Collections.singletonList(parentFolder));
-        FileContent fileContent = new FileContent("image/jpeg", localFile);
+        FileContent fileContent = new FileContent(Contants.IMAGE_JPEG_CONTENT_TYPE, localFile);
         com.google.api.services.drive.model.File uploadFile = this.driver.files().create(fileMetadata, fileContent)
                 .setFields("id")
                 .execute();
@@ -60,7 +79,63 @@ public class GoogleApiConnectService {
         String previewLink = "https://drive.google.com/file/d/" + fileId + "/view";
 
         return previewLink;
+    }*/
+
+    public ResultDtos uploadImagesV2(List<MultipartFile> imageFiles, String idFolder) throws IOException {
+        List<String> successLinks = new ArrayList<>();
+        List<ErrorResultDto> errors = new ArrayList<>();
+
+        for (MultipartFile imageFile : imageFiles) {
+            if (!isValidImage(imageFile)) {
+                String fileName = imageFile.getOriginalFilename();
+                errors.add(new ErrorResultDto("Upload Error File Name: " + fileName, " không đúng định dạng"));
+                continue;
+            }
+
+            File localFile = convertMultipartFileToFile(imageFile);
+
+            com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+            fileMetadata.setName(localFile.getName());
+            fileMetadata.setParents(Collections.singletonList(idFolder));
+            FileContent fileContent = new FileContent(Contants.IMAGE_JPEG_CONTENT_TYPE, localFile);
+            com.google.api.services.drive.model.File uploadFile = this.driver.files().create(fileMetadata, fileContent)
+                    .setFields("id")
+                    .execute();
+
+            String fileId = uploadFile.getId();
+            successLinks.add(Contants.DRIVE_PREVIEW_BASE_URL.concat(fileId).concat(Contants.VIEW_SUFFIX));
+
+        }
+
+        return new ResultDtos(successLinks, errors);
     }
+
+
+    public List<String> listFilesInFolder(String folderId) throws IOException {
+        List<String> fileLinks = new ArrayList<>();
+
+        String query = "'".concat(folderId).concat("' in parents");
+        FileList result = driver.files().list()
+                .setQ(query)
+                .setFields("files(id)")
+                .execute();
+
+        for (com.google.api.services.drive.model.File file : result.getFiles()) {
+            String fileId = file.getId();
+            fileLinks.add("https://drive.google.com/file/d/" + fileId + "/view");
+        }
+
+        return fileLinks;
+    }
+
+    private boolean isValidImage(MultipartFile file) {
+        if (file == null) {
+            return false;
+        }
+        String contentType = file.getContentType();
+        return contentType != null && contentType.startsWith("image/");
+    }
+
 
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
         // Tạo một tệp tạm thời
