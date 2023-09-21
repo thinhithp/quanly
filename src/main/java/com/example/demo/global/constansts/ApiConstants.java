@@ -28,7 +28,5 @@ public class ApiConstants {
         // depcreption
 
         public static final String CREATE_NHA = "Tạo mới nhà";
-
-
     }
 }

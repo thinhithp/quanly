@@ -8,8 +8,11 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +25,10 @@ import java.util.List;
 
 @Configuration
 public class GoogleApiConfig {
+
+    @Value("classpath:GoogleConfig/quanlyphongtro-399015-e2b1257b2fa5.json")
+    private Resource pathConfig;
+
 
     @Bean
     public Drive googleDriveService(GoogleCredential googleCredential) throws GeneralSecurityException, IOException {
@@ -37,7 +44,7 @@ public class GoogleApiConfig {
         JacksonFactory jsonFactory = new JacksonFactory();
 
         GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream
-                        ("C:\\Users\\QUANG THINH\\Desktop\\work\\quanlyphongtro-399015-e2b1257b2fa5.json"), httpTransport, jsonFactory)
+                        (pathConfig.getFile()), httpTransport, jsonFactory)
                 .createScoped(Collections.singleton("https://www.googleapis.com/auth/drive"));
 
         return credential;
