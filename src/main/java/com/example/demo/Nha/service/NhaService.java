@@ -2,6 +2,7 @@ package com.example.demo.Nha.service;
 
 import com.example.demo.Nha.dto.request.NhaCreaterDto;
 import com.example.demo.Nha.dto.request.NhaUpdateDto;
+import com.example.demo.Nha.dto.responts.NhaResponts;
 import com.example.demo.Nha.entity.NhaEntity;
 import com.example.demo.config.dto.ResultDtos;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ public interface NhaService {
 
     void updateNha(Long id, NhaUpdateDto nhaUpdateDto);
 
-    Optional<NhaEntity> findById(Long aLong);
+    NhaResponts findById(Long aLong) throws IOException;
 
     ResultDtos updateImage(Long id, List<MultipartFile> imageFiles) throws IOException;
 

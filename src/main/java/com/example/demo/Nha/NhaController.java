@@ -2,11 +2,13 @@ package com.example.demo.Nha;
 
 import com.example.demo.Nha.dto.request.NhaCreaterDto;
 import com.example.demo.Nha.dto.request.NhaUpdateDto;
+import com.example.demo.Nha.dto.responts.NhaResponts;
 import com.example.demo.Nha.entity.NhaEntity;
 import com.example.demo.Nha.service.NhaService;
 import com.example.demo.config.dto.ResultDtos;
 import com.example.demo.global.constansts.ApiConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,8 +33,8 @@ public class NhaController {
     }
 
     @GetMapping(ApiConstants.Nha.DETAIL)
-    public Optional<NhaEntity> detail(@PathVariable Long id) {
-        return this.nhaService.findById(id);
+    public ResponseEntity<NhaResponts> detail(@PathVariable Long id) throws IOException {
+        return ResponseEntity.ok(this.nhaService.findById(id));
     }
 
     @PutMapping(ApiConstants.Nha.NHA_UPDATE_IMAGE)

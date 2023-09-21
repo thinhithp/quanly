@@ -2,6 +2,8 @@ package com.example.demo.Nha.service.impl;
 
 import com.example.demo.Nha.dto.request.NhaCreaterDto;
 import com.example.demo.Nha.dto.request.NhaUpdateDto;
+import com.example.demo.Nha.dto.responts.AnhNhaDtos;
+import com.example.demo.Nha.dto.responts.NhaResponts;
 import com.example.demo.Nha.entity.NhaEntity;
 import com.example.demo.Nha.repository.NhaRepository;
 import com.example.demo.Nha.service.NhaService;
@@ -43,28 +45,40 @@ public class NhaServiceImpl implements NhaService {
     }
 
     @Override
-    public Optional<NhaEntity> findById(Long aLong) {
+    public NhaResponts findById(Long aLong)  {
         Optional<NhaEntity> nha = nhaRepository.findById(aLong);
-        if (!nha.isPresent()) {
-            throw new RuntimeException("không có id");
-        }
-        return nha;
+
+        return nha.map(nhaEntity -> {
+            List<String> listAnhNha = null;
+            try {
+                listAnhNha = this.readFolderRenderLinkFile(nhaEntity.getId());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            AnhNhaDtos anhNhaDtos = new AnhNhaDtos(listAnhNha);
+            return new NhaResponts(nhaEntity, anhNhaDtos);
+        }).orElseThrow(() -> new RuntimeException("không có id"));
     }
 
+
     @Override
-    public ResultDtos updateImage(Long id, List<MultipartFile> imageFiles) throws IOException {
-        NhaEntity nhaEntity = this.findById(id).orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
-
-        // Lấy ra id folder từ @nhaEntity
-        String folderLink = nhaEntity.getHinhAnh();
-        String folderId = StringUtils.extractFolderIdFromLink(folderLink);
-
-        return this.googleService.uploadImagesV2(imageFiles, folderId);
+    public ResultDtos updateImage(Long id, List<MultipartFile> imageFiles) {
+        return nhaRepository.findById(id)
+                .map(nhaEntity -> {
+                    String folderLink = nhaEntity.getHinhAnh();
+                    String folderId = StringUtils.extractFolderIdFromLink(folderLink);
+                    try {
+                        return googleService.uploadImagesV2(imageFiles, folderId);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
     }
 
     @Override
     public List<String> readFolderRenderLinkFile(Long id) throws IOException {
-        NhaEntity nhaEntity = this.findById(id).orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
+        NhaEntity nhaEntity = this.nhaRepository.findById(id).orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
         String folderLink = nhaEntity.getHinhAnh();
         String folderId = StringUtils.extractFolderIdFromLink(folderLink);
         return this.googleService.listFilesInFolder(folderId);
@@ -72,7 +86,7 @@ public class NhaServiceImpl implements NhaService {
 
     @Override
     public Boolean deleteNha(Long id) {
-        NhaEntity nhaEntity = this.findById(id).orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
+        NhaEntity nhaEntity = this.nhaRepository.findById(id).orElseThrow(() -> new RuntimeException(Contants.ID_IS_NOT_EXISTS));
         int affectedRows = nhaRepository.deleteNha(nhaEntity.getId());
         return affectedRows > 0;
     }
