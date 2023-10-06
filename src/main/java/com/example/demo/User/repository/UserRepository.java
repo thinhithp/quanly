@@ -19,11 +19,10 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     @Transactional
-    @Modifying
     @Query(value = "INSERT INTO USERS (user_name, email, password, full_name, so_dien_thoai, role, created_by, created_time) " +
-            "VALUES (:#{#dto.userName}, :#{#dto.email}, :#{#dto.password}, :#{#dto.fullName}, :#{#dto.soDienThoai}, :#{#dto.role}, 'ADMIN', current_timestamp)",
+            "VALUES (:#{#dto.userName}, :#{#dto.email}, :#{#dto.password}, :#{#dto.fullName}, :#{#dto.soDienThoai}, :#{#dto.role}, 'ADMIN', current_timestamp) RETURNING *",
             nativeQuery = true)
-    void insertUser(UserCreateDto dto);
+    UserEntity insertUser(UserCreateDto dto);
 
 
     @Transactional
@@ -45,6 +44,13 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
             "where user_id = :id and " +
             "password = :oldPass", nativeQuery = true)
     void updatePassWordUser(@Param("id") UUID id, @Param("oldPass") String oldPass, @Param("pass") String pass);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update users set password = :pass, " +
+            "update_time = current_timestamp " +
+            "where user_id = :id " , nativeQuery = true)
+    void updatePassWord(@Param("id") UUID id, @Param("pass") String pass);
 
     @Transactional
     @Query(value = "SELECT password FROM users where user_id = :id", nativeQuery = true)
