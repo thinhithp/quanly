@@ -2,31 +2,32 @@ package com.example.demo.global.constansts;
 
 public class ApiConstants {
 
+    public static final String CREATE = "/create";
+
+    public static final String UDPATE = "/update/{id}";
+
+    public static final String DETAIL = "/{id}";
+
+    public static final String DELETE = "/delete/{id}";
+
+    public static final String CHANGE_PASS = "/change-pass/{id}";
+
     private ApiConstants() {
     }
 
-    public static class Nha {
+
+    public static class Users {
         /**
          * @UnsupportedOperationException là một
          * loại ngoại lệ (exception) không kiểm tra
          * (unchecked) trong Java, thường được sử dụng để chỉ ra rằng
          * một phương thức cụ thể chưa được hỗ trợ hoặc không được thực hiện.
          */
-        private Nha() {
+        private Users() {
             throw new UnsupportedOperationException();
         }
 
-        public static final String BASE = "nha";
-
-        public static final String NHA_CREATE = "create";
-        public static final String NHA_UPDATE = "update/{id}";
-        public static final String NHA_UPDATE_IMAGE = "update-image/{id}";
-        public static final String DETAIL = "{id}";
-        public static final String GET_LINK_IMAGE = "/get-link/{id}";
-        public static final String DELETE = "/delete/{id}";
-
-        // depcreption
-
+        public static final String BASE = "user";
         public static final String CREATE_NHA = "Tạo mới nhà";
     }
 }
