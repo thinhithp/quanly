@@ -1,0 +1,14 @@
+-- -- Định nghĩa hàm để sinh UUID
+-- CREATE OR REPLACE FUNCTION generate_uuid()
+--     RETURNS TRIGGER AS $$
+-- BEGIN
+--     NEW.user_id = uuid_generate_v4();
+--     RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- -- Tạo trigger
+-- CREATE TRIGGER set_user_id_trigger
+--     BEFORE INSERT ON users
+--     FOR EACH ROW
+-- EXECUTE FUNCTION generate_uuid();

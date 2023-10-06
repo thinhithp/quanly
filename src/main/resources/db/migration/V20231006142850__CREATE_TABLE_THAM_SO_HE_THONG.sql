@@ -1,0 +1,32 @@
+CREATE TABLE THAM_SO_HE_THONG
+(
+    loai     varchar(100),
+    ma       numeric(2, 0),
+    ten      varchar(50),
+    chi_tiet varchar(100)
+);
+COMMENT ON COLUMN THAM_SO_HE_THONG.loai IS 'Loại';
+COMMENT ON COLUMN THAM_SO_HE_THONG.ma IS 'Mã';
+COMMENT ON COLUMN THAM_SO_HE_THONG.ten IS 'Tên';
+COMMENT ON COLUMN THAM_SO_HE_THONG.chi_tiet IS 'Chi tiết';
+
+-- Giới tính
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('NAM', 0, 'GIOI_TINH', 'Nam');
+--
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('NU', 1, 'GIOI_TINH', 'Nữ');
+--
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('UNKNOWN', 2, 'GIOI_TINH', 'Chưa xác định');
+
+-- User Role
+
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('USER', 0, 'ROLE', 'Người dùng');
+--
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('ADMIN', 1, 'ROLE', 'Quản trị viên cấp 1');
+--
+INSERT INTO THAM_SO_HE_THONG(TEN, MA, LOAI, CHI_TIET)
+VALUES ('SUPERADMIN', 99, 'ROLE', 'Quản trị viên cấp 2');
