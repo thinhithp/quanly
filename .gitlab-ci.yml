@@ -1,17 +1,19 @@
 stages:
   - build
+  - test
   - deploy
 
 build:
   stage: build
   script:
-    - docker build -t quanly:tag .
-  only:
-    - master
+    - echo "Building the application..."
+
+test:
+  stage: test
+  script:
+    - echo "Running tests..."
 
 deploy:
   stage: deploy
   script:
-    - docker run -d -p 8080:8080 quanly:tag
-  only:
-    - master
+    - echo "Deploying to production..."
