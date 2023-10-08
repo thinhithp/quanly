@@ -19,4 +19,6 @@ public interface UserService {
     Boolean updatePass(UUID id, String oldpass, String pass);
 
     Optional<UserEntity> findById(UUID id);
+
+    Boolean login(String userName, String pass);
 }

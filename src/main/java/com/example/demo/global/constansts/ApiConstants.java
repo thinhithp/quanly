@@ -12,6 +12,8 @@ public class ApiConstants {
 
     public static final String CHANGE_PASS = "/change-pass/{id}";
 
+    public static final String LOGIN = "/login";
+
     private ApiConstants() {
     }
 

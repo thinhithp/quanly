@@ -39,4 +39,10 @@ public class UserController {
     public Optional<UserEntity> get(@PathVariable UUID id) {
         return this.service.findById(id);
     }
+
+    @GetMapping(ApiConstants.Users.BASE + ApiConstants.LOGIN)
+    public Boolean login(@RequestParam String userName, String pass){
+        return this.service.login(userName, pass);
+    }
+
 }

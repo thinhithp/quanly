@@ -45,8 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updatePass(UUID id, String oldPass, String newPass) {
         this.comparePass(id, oldPass);
-        String newPassHard = encoder.encode(newPass);
-        this.repository.updatePassWord(id, newPassHard);
+        this.repository.updatePassWord(id, encoder.encode(newPass));
         return true;
     }
 
@@ -63,5 +62,18 @@ public class UserServiceImpl implements UserService {
         return this.repository.findById(id);
     }
 
-
+    //TODO:
+    @Override
+    public Boolean login(String userName, String pass) {
+        int count = 0;
+        if (this.repository.checkUser(userName).isEmpty()) {
+            throw new RuntimeException("Tài khoản không tồn tại");
+        }
+        while (count >= 3) {
+            if (this.repository.login(userName, pass).isEmpty()) {
+                throw new RuntimeException("Mật khẩu không chính xác, xin vui lòng thử lại");
+            }
+        }
+        return true;
+    }
 }
