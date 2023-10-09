@@ -3,6 +3,8 @@ stages:
   - test
   - deploy
 
+variables:
+  PATH: "$PATH:/usr/bin/mvn"
 
 build:
   stage: build
