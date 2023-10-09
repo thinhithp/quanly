@@ -1,17 +1,24 @@
 stages:
   - build
+  - test
   - deploy
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode"
 
 build:
   stage: build
   script:
-    - docker build -t quanly:tag .
-  only:
-    - master
+    - mvn $MAVEN_CLI_OPTS clean package
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
 
 deploy:
   stage: deploy
   script:
-    - docker run -d -p 8080:8080 quanly:tag
+    - echo "Deploy to production server here" # Thay thế lệnh này bằng các bước triển khai thực tế
   only:
-    - master
+    - master # Chỉ triển khai từ nhánh master
