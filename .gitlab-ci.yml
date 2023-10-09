@@ -4,7 +4,7 @@ stages:
   - deploy
 
 variables:
-  PATH: "$PATH:/path/to/maven/bin"
+  PATH: "$PATH:/usr/bin/gitlab-runner"
 
 build:
   stage: build
