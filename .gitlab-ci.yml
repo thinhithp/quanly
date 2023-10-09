@@ -13,3 +13,5 @@ deploy:
     - master  # Chỉ triển khai từ nhánh master
   script:
     - docker run -d --name my-java-app my-java-app
+before_script:
+  - usermod -aG docker $USER
