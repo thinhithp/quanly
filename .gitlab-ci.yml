@@ -1,19 +1,30 @@
 stages:
-  - build
-  - test
+  - publish
   - deploy
-
-build:
-  stage: build
+variables:
+  IMAGE_NAME: $GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
+publish:
+  image: docker
+  stage: publish
+  services:
+    - docker:dind
+  before_script:
+    - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
-    - echo "Building the application..."
-
-test:
-  stage: test
-  script:
-    - echo "Running tests..."
-
+    - docker build . --tag $CI_REGISTRY/$IMAGE_NAME
+    - docker push $CI_REGISTRY/$IMAGE_NAME
 deploy:
+  image: centos:latest
   stage: deploy
+  only:
+    - master
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 - > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
   script:
-    - echo "Deploying to production..."
+    - ssh $SSH_USER$SSH_HOST "cd $WORK_DIR && docker compose npull && docker compose up -d && exit"
+  after_script:
+    - rm -rf ~/.ssh
