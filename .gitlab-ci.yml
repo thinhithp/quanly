@@ -14,5 +14,5 @@ deploy:
   script:
     - docker run -d --name my-java-app my-java-app
 before_script:
-  - usermod -aG <docker-compose> $USER
+  - usermod -aG <root> $USER
 
