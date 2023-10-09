@@ -1,14 +1,26 @@
-# Sử dụng hình ảnh cơ sở mà bạn cần, ví dụ: hình ảnh OpenJDK cho Java 11
-FROM openjdk:11
+# Sử dụng hình ảnh CentOS 7 làm base image
+FROM centos:7
 
-# Đặt thư mục làm việc mặc định trong container
-WORKDIR /app
+# Cài đặt các gói cần thiết
+RUN yum install -y java-11-openjdk-devel wget && \
+    yum clean all
 
-# Sao chép tất cả các tệp và thư mục từ thư mục dự án của bạn vào container
-COPY . .
+# Tải và cài đặt Maven
+RUN wget https://apache.mirror.digionline.de/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz && \
+    tar -zxvf apache-maven-3.8.3-bin.tar.gz && \
+    mv apache-maven-3.8.3 /opt/maven && \
+    rm apache-maven-3.8.3-bin.tar.gz
 
-# Biên dịch ứng dụng Java của bạn (ví dụ: Maven)
-RUN ./mvnw package -DskipTests
+# Thiết lập biến môi trường cho Maven
+ENV M2_HOME=/opt/maven
+ENV M2=$M2_HOME/bin
+ENV PATH=$M2:$PATH
 
-# Điểm khởi đầu của ứng dụng Java khi container được chạy
-CMD ["java", "-jar", "target/your-java-application.jar"]
+# Chạy lệnh kiểm tra Maven
+RUN mvn --version
+
+# Thiết lập thư mục làm việc mặc định
+WORKDIR /workspace
+
+# Khởi động bash khi container được chạy
+CMD ["/bin/bash"]
