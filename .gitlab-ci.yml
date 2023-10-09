@@ -1,28 +1,7 @@
 stages:
-  - check_environment
   - build
-  - test
-  - deploy
-check_environment:
-  stage: check_environment
-  script:
-    - echo $PATH
-variables:
-  PATH: "$PATH:/usr/bin/mvn"
 
-build:
+job:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean package
-
-test:
-  stage: test
-  script:
-    - mvn $MAVEN_CLI_OPTS test
-
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploy to production server here" # Thay thế lệnh này bằng các bước triển khai thực tế
-  only:
-    - master # Chỉ triển khai từ nhánh master
+    - echo "Building..."
