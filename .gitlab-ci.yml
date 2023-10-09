@@ -1,8 +1,12 @@
 stages:
+  - check_environment
   - build
   - test
   - deploy
-
+check_environment:
+  stage: check_environment
+  script:
+    - echo $PATH
 variables:
   PATH: "$PATH:/usr/bin/mvn"
 
