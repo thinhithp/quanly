@@ -69,6 +69,11 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     String checkPass(@Param("pass") String pass);
 
     @Transactional
-    @Query(value = "SELECT u.full_name from user u where lower(u.user_name) = :userName and lower(u.password) = :pass", nativeQuery = true)
+    @Query(value = "SELECT CASE WHEN password = :password THEN true ELSE false END FROM users WHERE user_name = :user", nativeQuery = true)
+    boolean checkPassOfUser(@Param("user") String user, @Param("password") String password);
+
+
+    @Transactional
+    @Query(value = "SELECT full_name from users  where lower(user_name) = :userName and lower(password) = :pass", nativeQuery = true)
     String login(@Param("userName") String userName, @Param("pass") String pass);
 }
