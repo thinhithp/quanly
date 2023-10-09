@@ -4,7 +4,7 @@ stages:
   - deploy
 
 variables:
-  PATH: "$PATH:/path/to/maven/bin"
+  MAVEN_CLI_OPTS: "--batch-mode"
 
 build:
   stage: build
