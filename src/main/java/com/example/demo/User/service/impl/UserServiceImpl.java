@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
         return this.repository.findById(id);
     }
 
-    //TODO:
     @Override
     public Boolean login(String userName, String pass) {
         int count = 0;
