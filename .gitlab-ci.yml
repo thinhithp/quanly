@@ -3,8 +3,6 @@ stages:
   - test
   - deploy
 
-variables:
-  PATH: "$PATH:/usr/bin/gitlab-runner"
 
 build:
   stage: build
