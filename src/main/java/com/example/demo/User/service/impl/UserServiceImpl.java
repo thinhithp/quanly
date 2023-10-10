@@ -63,32 +63,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean login(String userName, String pass) {
-        int maxLoginAttempts = 3;
-        int count = 0;
-
-        // Kiểm tra tài khoản tồn tại
-        if (this.repository.checkUser(userName).isEmpty()) {
+    public Boolean login( String userName, String pass) {
+        int maxLoginAttempts = 1;
+        int count = 1;
+        boolean loginSuccess = false;
+        String username = this.repository.checkUser(userName);
+        if (username == null){
             throw new RuntimeException("Tài khoản không tồn tại");
-        }
-
-        while (count < maxLoginAttempts) {
-            if (this.repository.checkPassOfUser(userName, pass)) {
-                // Mật khẩu đúng
-                this.repository.login(userName, pass);
-                return true; // Đăng nhập thành công
-            } else {
-                // Mật khẩu sai
-                count++;
-                if (count < maxLoginAttempts) {
-                    System.out.println(count);
-                    throw new RuntimeException("Mật khẩu không chính xác, xin vui lòng thử lại ");
+        }else {
+            outerLoop:
+            while (count <= maxLoginAttempts) {
+                // lấy pass
+                String pass1 = this.repository.checkPass(userName);
+                if (!this.passwordEncodeConfig.bCryptPasswordEncoder().matches(pass, pass1)) {
+                    count++;
+                    continue outerLoop;
+                } else {
+                    loginSuccess = true;
+                    break outerLoop;
                 }
             }
+            if (loginSuccess) {
+                return true;
+            } else {
+                throw new RuntimeException("Tài khoản hoặc mật khẩu không chính xác, Xin vui lòng kiểm tra lại");
+            }
         }
+    }
 
-        // Đăng nhập không thành công sau quá nhiều lần thử
-        throw new RuntimeException("Đăng nhập không thành công sau " + maxLoginAttempts + " lần thử.");
+    @Override
+    public Boolean checklogin(String user, String pass) {
+        return null;
     }
 
 

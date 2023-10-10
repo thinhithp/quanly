@@ -21,4 +21,6 @@ public interface UserService {
     Optional<UserEntity> findById(UUID id);
 
     Boolean login(String userName, String pass);
+
+    Boolean checklogin(String user, String pass);
 }
