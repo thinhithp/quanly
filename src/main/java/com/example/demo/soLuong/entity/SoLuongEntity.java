@@ -36,9 +36,9 @@ public class SoLuongEntity implements Serializable {
     private Integer idGioHang;
 
     @Column(name = "TRANG_THAI")
-    @Enumerated(EnumType.ORDINAL)
     private Integer trangThai;
 
-    @OneToOne(mappedBy = "soLuong")
-    private SanPhamEntity entity;
+    @OneToOne()
+    @JoinColumn(name = "id_san_pham")
+    private SanPhamEntity sanPham;
 }

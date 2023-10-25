@@ -26,6 +26,15 @@ public class TagEntity implements Serializable {
     @Column(name = "TAG_NAME")
     private String tagName;
 
+    @Column(name = "ITEM_CODE")
+    private String iTemCode;
+
+    @Column(name = "GROUP_CODE")
+    private String groupCode;
+
+    @Column(name = "PARENT_CODE")
+    private String parentCode;
+
     @ManyToMany(mappedBy = "tag")
     private Set<SanPhamEntity> sanPhams;
 

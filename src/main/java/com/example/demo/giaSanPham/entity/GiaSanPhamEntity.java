@@ -29,7 +29,6 @@ public class GiaSanPhamEntity implements Serializable {
     private String giaNiemYet;
 
     @Column(name = "TRANG_THAI")
-    @Enumerated(EnumType.ORDINAL)
     private Integer trangThai;
 
     @Column(name = "NGUOI_NM")
@@ -41,6 +40,7 @@ public class GiaSanPhamEntity implements Serializable {
     @Column(name = "NGAY_CN")
     private Date ngayCn;
 
-    @OneToOne(mappedBy = "gia")
+    @OneToOne()
+    @JoinColumn(name = "id_san_pham")
     private SanPhamEntity sanPham;
 }

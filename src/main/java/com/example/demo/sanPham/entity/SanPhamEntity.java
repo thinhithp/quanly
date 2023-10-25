@@ -36,7 +36,6 @@ public class SanPhamEntity implements Serializable {
     private String moTaNhanh;
 
     @Column(name = "TRANG_THAI")
-    @Enumerated(EnumType.ORDINAL)
     private Integer trangThai;
 
     @Column(name = "NGUOI_NM")
@@ -48,23 +47,21 @@ public class SanPhamEntity implements Serializable {
     @Column(name = "NGAY_CN")
     private Date ngayCn;
 
-    @OneToOne
-    @JoinColumn(name = "id_san_pham")
+
+    @OneToOne(mappedBy = "sanPham", cascade = CascadeType.ALL)
     private SoLuongEntity soLuong;
 
-    @OneToOne
-    @JoinColumn(name = "id_san_pham")
+    @OneToOne(mappedBy = "sanPham",cascade = CascadeType.ALL)
     private GiaSanPhamEntity gia;
 
-    @OneToOne
-    @JoinColumn(name = "id_san_pham")
+    @OneToOne(mappedBy = "sanPham",cascade = CascadeType.ALL)
     private ThongTinSanPhamEntity thongTinSanPham;
 
     @ManyToMany
     @JoinTable(
             name = "tag_san_pham",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            joinColumns = @JoinColumn(name = "san_pham_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<TagEntity> tag;
 

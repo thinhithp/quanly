@@ -94,6 +94,7 @@ public class ThongTinSanPhamEntity implements Serializable {
     @Column(name = "GIOI_TINH_SU_DUNG")
     private String gioiTinhSuDung;
 
-    @OneToOne(mappedBy = "thongTinSanPham")
+    @OneToOne()
+    @JoinColumn(name = "id_san_pham")
     private SanPhamEntity sanPham;
 }
