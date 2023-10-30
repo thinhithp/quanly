@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -22,7 +24,7 @@ public class SanPhamService {
     private final TagRepository tagRepository;
 
     @Transactional
-    public SanPhamEntity insertWithTags(SanPhamEntity objInput) {
+    public SanPhamEntity insertWithTags(SanPhamEntity objInput, Long idTag) {
         // Bước 1: Tạo sản phẩm mới
         SanPhamEntity sanPham = objInput;
 
@@ -30,12 +32,8 @@ public class SanPhamService {
         Set<TagEntity> tags = new HashSet<>();
 
         // Tạo và lấy các TagEntity đã tồn tại từ cơ sở dữ liệu
-        TagEntity tag1 = tagRepository.findByTagName("Sữa Meiji");
-
-        // Thêm các tag vào danh sách
-        if (tag1 != null) {
-            tags.add(tag1);
-        }
+        Optional<TagEntity> optionalTag1 = tagRepository.findById(idTag);
+        optionalTag1.ifPresent(tag -> tags.add(tag));
 
         // Bước 3: Gán danh sách tag cho sản phẩm
         sanPham.setTag(tags);
@@ -45,5 +43,17 @@ public class SanPhamService {
 
         return sanPham;
     }
+
+
+        public static int generateRandomNumber(int limit) {
+            Random random = new Random();
+            return random.nextInt(limit) + 1;
+        }
+
+        public static void main(String[] args) {
+            int limit = 100; // Giới hạn để tạo số ngẫu nhiên từ 1 đến 100
+            int randomResult = generateRandomNumber(limit);
+            System.out.println("Số ngẫu nhiên là: " + randomResult);
+        }
 
 }

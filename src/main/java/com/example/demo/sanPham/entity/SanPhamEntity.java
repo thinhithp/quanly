@@ -65,4 +65,7 @@ public class SanPhamEntity implements Serializable {
     )
     private Set<TagEntity> tag;
 
+
+    public SanPhamEntity(SanPhamEntity objInput) {
+    }
 }

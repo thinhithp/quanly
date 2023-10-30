@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
@@ -15,5 +16,8 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
     @Query(value = "SELECT id FROM tag", nativeQuery = true)
     List<Long> findAllTagIds();
 
-    TagEntity findByTagName(String tagName);
+    @Transactional
+    @Query(value = "SELECT * from tag WHERE id = :id", nativeQuery = true)
+    Optional<TagEntity> findById(Long id);
+
 }
