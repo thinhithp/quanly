@@ -12,6 +12,7 @@ public class EnumTag {
     @Getter
     @AllArgsConstructor
     public enum tag {
-
+        SUA_BOT("Sữa bột");
+        private String name;
     }
 }

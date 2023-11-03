@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class TagEntity implements Serializable {
     private Long id;
 
     @Column(name = "TAG_NAME")
+    @NotNull
     private String tagName;
 
     @Column(name = "ITEM_CODE")

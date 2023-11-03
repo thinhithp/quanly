@@ -8,4 +8,8 @@ public class StringUtils {
     public static String extractFolderIdFromLink(String folderLink) {
         return folderLink.substring(folderLink.lastIndexOf('/') + 1);
     }
+
+    public static boolean isNullOrBlank(String text) {
+        return text == null || text.trim().isBlank();
+    }
 }
