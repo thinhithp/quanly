@@ -1,4 +1,4 @@
 CREATE TABLE TAG(
-    ID int8 PRIMARY KEY,
+    ID SERIAL PRIMARY KEY,
     TAG_NAME varchar(50)
 );

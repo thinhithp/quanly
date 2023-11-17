@@ -77,7 +77,7 @@ public class ThongTinSanPhamEntity implements Serializable {
     private Boolean henGio;
 
     @Column(name = "Loai")
-    private Boolean loai;
+    private String loai;
 
     @Column(name = "AM_THANH")
     private Boolean amThanh;

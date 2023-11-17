@@ -15,20 +15,3 @@ CREATE TRIGGER trigger_increment_san_pham_id
 EXECUTE FUNCTION increment_san_pham_id();
 
 --------
-
-
-CREATE SEQUENCE tag_id_seq;
-
-CREATE OR REPLACE FUNCTION increment_tag_id()
-    RETURNS TRIGGER AS $$
-BEGIN
-    -- Tăng giá trị ID từ trình tự san_pham_id_seq và gán cho NEW.id
-    NEW.id := nextval('tag_id_seq');
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_increment_tag_id
-    BEFORE INSERT ON tag
-    FOR EACH ROW
-EXECUTE FUNCTION increment_tag_id();
