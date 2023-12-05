@@ -1,31 +1,16 @@
 stages:
   - build
-  - test
   - deploy
-
-variables:
-  DOCKER_IMAGE: "JAVA"
-  CONTAINER_NAME: "JAVA"
-
-before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 build:
   stage: build
   script:
-    - docker build -t $DOCKER_IMAGE .
-
-test:
-  stage: test
-  script:
-    - docker run $DOCKER_IMAGE npm test
+    - ./mvnw clean package
 
 deploy:
   stage: deploy
   only:
     - master
   script:
-    - docker pull $DOCKER_IMAGE
-    - docker stop $CONTAINER_NAME || true
-    - docker rm $CONTAINER_NAME || true
-    - docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_IMAGE
+    - scp target/your-app.jar root@y103.163.119.189:/path/to/deployment/directory
+    - ssh root@y103.163.119.189'sudo systemctl restart your-app.service'
