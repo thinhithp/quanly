@@ -1,18 +1,31 @@
 stages:
+  - build
+  - test
   - deploy
 
+variables:
+  DOCKER_IMAGE: "JAVA"
+  CONTAINER_NAME: "JAVA"
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE .
+
+test:
+  stage: test
+  script:
+    - docker run $DOCKER_IMAGE npm test
+
 deploy:
-  image: centos:latest
   stage: deploy
   only:
     - master
-  before_script:
-    - yum -y update  # Thay đổi lệnh để cập nhật trên CentOS
-    - yum -y install openssh  # Thay đổi lệnh để cài đặt openssh trên CentOS
-    - install -m 600 -D /dev/null ~/.ssh/id_rsa
-    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts  # Sửa đổi tên tệp để đúng cú pháp và đường dẫn
   script:
-    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $MAIN_BRANCH && git pull && exit"
-  after_script:
-    - rm -rf ~/.ssh
+    - docker pull $DOCKER_IMAGE
+    - docker stop $CONTAINER_NAME || true
+    - docker rm $CONTAINER_NAME || true
+    - docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_IMAGE
