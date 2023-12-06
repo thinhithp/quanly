@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM maven:openjdk-17-slim
 
 VOLUME /tmp
 
