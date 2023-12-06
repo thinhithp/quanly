@@ -19,7 +19,7 @@ maven-build:
       - target/*.jar
 
 maven-test: # run unit test của project
-  image: maven:3.8.1-openjdk-17-slim
+  image: maven:3.8.4-openjdk-17-slim
   stage: test
   script: "mvn test"
   artifacts:
