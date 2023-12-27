@@ -1,10 +1,9 @@
-FROM maven:3.8.4-openjdk-11-slim
+# Sử dụng image cơ bản có hỗ trợ Java
+FROM openjdk:11-jre-slim
 
-VOLUME /tmp
+# Thiết lập thư mục làm việc
+WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY target/quanly.jar app.jar
 
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","app.jar"]
-
+ENTRYPOINT ["java", "-jar", "app.jar"]

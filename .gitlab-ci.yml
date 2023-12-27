@@ -1,34 +1,21 @@
-image: gitlab/dind # sử dụng môi trường gitlab
-services:
-  - docker:dind # sử dụng docker để run các thành phần bên dưới
+stages:
+  - build
+  - deploy
 
 variables:
-  IMAGE_NAME: thinhithp/test # iamge mà các bạn vừa tạo, nhớ thay tên username và tên image bạn vừa tạo ở trên
+  IMAGE_NAME: quanly
+  CONTAINER_NAME: quanly
 
-stages: # định nghĩa các bước, ở đây minhd có 3 bước tương ứng như bên dưới
-  - build
-  - test
-  - docker
-
-maven-build:
-  image: maven:3.8.4-openjdk-11-slim
+build:
   stage: build
-  script: "./mvn clean package"
-  artifacts:
-    paths:
-      - target/*.jar
-
-maven-test:
-  image: maven:3.8.4-openjdk-11-slim
-  stage: test
-  script: "./mvn test" # Sửa lệnh này để sử dụng Maven Wrapper
-  artifacts:
-    paths:
-      - target/*.jar
-
-docker-build: # bước này sẽ build iamge từ Dockerfile và push lên docker hub
-  stage: docker
   script:
-    - docker login -u $USERNAME_DOCKER -p $PASSWORD_DOCKER # nhập tên username và password docker hub của các bạn ở đây để có quyền push
-    - docker build -t $IMAGE_NAME:1.0 . # build image, 1.0 là tag coi nó như version
-    - docker push $IMAGE_NAME:1.0 # push image docker hub sau khi build thành công
+    - mvn clean install
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_REF_NAME .
+
+deploy:
+  stage: deploy
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+    - docker stop $CONTAINER_NAME || true
+    - docker rm $CONTAINER_NAME || true
+    - docker run -d -p 8080:8080 --name $CONTAINER_NAME $IMAGE_NAME:$CI_COMMIT_REF_NAME
