@@ -7,14 +7,18 @@ on:
 
 jobs:
   build_run_and_push:
-    runs-on: ubuntu-latest
+    runs-on: centos-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Docker
-        run: echo "DOCKER_HOST=$DOCKER_HOST" >> $GITHUB_ENV
+        run: |
+          echo "DOCKER_HOST=$DOCKER_HOST" >> $GITHUB_ENV
+          sudo yum install -y docker
+          sudo systemctl start docker
+          sudo systemctl enable docker
 
       - name: Build Docker image
         run: |
