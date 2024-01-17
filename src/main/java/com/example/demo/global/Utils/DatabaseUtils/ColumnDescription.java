@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DatabaseDto {
-	private String colunmName;
-	private String type;
-	private String foreignKey;
-	private Integer columnSize;
-	private boolean isNullable;
-	private String defautValue;
+public class ColumnDescription {
+	private String columnName;
 	private String description;
 }
